@@ -1,0 +1,16 @@
+<% provide(:title, @organization.name) %>
+
+<h1><%= @organization.name %></h1>
+<%= link_to("Back to All Organizations", organizations_path) %>
+
+<div>
+  <strong>Locations:</strong>
+  <% @organization.locations.each do |location| %>
+      <div><%= location.decorate.address %></div>
+  <% end %>
+</div>
+
+<div>
+  <strong>Description:</strong>
+  <%= @organization.description %>
+</div>
