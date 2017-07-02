@@ -45,23 +45,24 @@ as the default, but implement functionality such that a user may toggle the filt
 switch to *AND* filtering. Be mindful of implementing this in the UI such that an average user (who
 may have never heard of this AND/OR distinction) will be able to understand what the toggling means.
 
-3. We often need to be able to export lists of organizations to data processing services or clients. Create
-a rake task that generates a CSV of Organizations (and all of their attributes), with the option to use an
- argument passed to the rake task to filter the list of organizations included in the CSV by
- a single eligibility. Think about what objects you need to achieve this,
-and what objects you may want to reuse from other parts of the codebase to accomplish this filtering.
-
-4. We want to make this app presentable to users. Please write semantic HTML and CSS to make the index page match `index-mockup.png`. Afterwards, improve the UI of the organizations show page using the styles you've created for the index page – you have more autonomy here, and we're simply looking for consistency with the index page's UI. Please reference "Mockup Details" below for more information.
+3. We want to make this app presentable to users. Please write semantic HTML
+and CSS to make the index page match `index-mockup.png`. Afterwards, improve
+the UI of the organizations show page using the styles you've created for the
+index page. You have more autonomy with the show page, but please do your best
+to accurately reproduce the index view. Please reference "Mockup Details" below
+for more information.
 
 ## Mockup Details
-For this part of the challenge, we want to see your ability to accurately reproduce details from a mockup,
-infer how other views should look based on the provided mockup, and degrade the UI to mobile without explicit mockups
-for mobile. You can use your best judgement for any aspect of the mockup not shown – hover states and responsive
-mobile views come to mind.
+For this part of the challenge, we want to see your ability to accurately
+reproduce details from a mockup, infer how other views should look based on the
+provided mockup, and degrade the UI to mobile without explicit mockups for
+mobile. You can use your best judgement for any aspect of the mockup not shown
+– hover states and responsive mobile views come to mind.
 
 #### Fonts
-The only font used is San Fransisco with various weights. Please use this font and specify any other native fallback
-fonts that you think are appropriate.
+The only font used is San Fransisco with various weights. Please use this font
+and specify any other native fallback fonts that you think are appropriate.
+
 
 ## Dev Setup
 Complete the following to get the existing application up and running.
@@ -93,11 +94,12 @@ product assumptions against you as long as they are well communicated.
 ## How this challenge will be evaluated
 
 1. **Did the candidate meet all the basic requirements?** Does the most essential functionality
-(filtering by eligibilities and the rake task) work completely and is it tested? Does the UI match the provided mockup?
+(filtering by eligibilities) work completely and is it tested? Does the UI match the provided mockup?
 
 2. **Did the candidate meet the basic requirements with excellent work?** How
 well-factored, clean, readable, DRY, and performant is the code? Is the business logic in the appropriate
 places (e.g. models, views, controllers, service objects, helpers, javscripts, stylesheets, etc.)? Are the tests
-excellent (clean, readable, etc.) or merely decent? Is the UI responsive?
+excellent (clean, readable, etc.) or merely decent? Is the UI responsive, written with minimal CSS and
+following best practices?
 
 Please note that for moving candidates forward in our process, we're looking for both 1 and 2 here.
