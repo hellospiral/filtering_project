@@ -20,10 +20,9 @@ group :development, :test do
 end
 
 group :test do
-  gem "capybara-webkit"
+  #gem "capybara-webkit"
   gem "shoulda-matchers", require: false
   gem "capybara"
   gem "launchy"
   gem "database_cleaner"
 end
-
