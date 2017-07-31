@@ -11,10 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170606151858) do
+ActiveRecord::Schema.define(version: 20170731225537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "eligibilities", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "eligibilities", ["name"], name: "index_eligibilities_on_name", using: :btree
+
+  create_table "eligibilities_organizations", id: false, force: :cascade do |t|
+    t.integer "eligibility_id"
+    t.integer "organization_id"
+  end
+
+  add_index "eligibilities_organizations", ["eligibility_id"], name: "index_eligibilities_organizations_on_eligibility_id", using: :btree
+  add_index "eligibilities_organizations", ["organization_id"], name: "index_eligibilities_organizations_on_organization_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.integer  "organization_id", null: false
