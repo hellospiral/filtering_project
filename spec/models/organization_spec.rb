@@ -13,5 +13,6 @@ describe Organization, type: :model do
     end
 
     it { is_expected.to validate_presence_of(:description) }
+    it { should have_and_belong_to_many :eligibilities}
   end
 end
