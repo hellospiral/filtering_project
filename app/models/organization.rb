@@ -4,4 +4,6 @@ class Organization < ActiveRecord::Base
 
   has_many :locations
   has_and_belongs_to_many :eligibilities
+
+  scope :by_eligibility, ->(eligibility) {  joins(:eligibilities).where(eligibilities: { name: eligibility })}
 end
