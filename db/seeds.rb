@@ -27,3 +27,9 @@ organization_seeds.each do |org_seed|
     org.locations.create location_attrs
   end
 end
+
+eligibility_seeds = [{name: 'Youth'},{name: 'Seniors'},{name: 'Ex-Offenders'},{name: 'Refugees'},{name: 'Veterans'},{name: 'Abuse Survivors'}]
+
+eligibility_seeds.each do |elg_seed|
+  elg = Eligibility.create(name: elg_seed[:name])
+end
