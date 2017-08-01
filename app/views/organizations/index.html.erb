@@ -2,8 +2,11 @@
 
 <%= render @organizations %>
 
-<ul>Eligibilities:</ul>
-  <% @eligibilities.each do |ele| %>
-    <li><%= ele.name %></li>
+<h2>Filter organizations</h2>
+<%= form_tag organizations_path, method: 'get' do %>
+  <% @eligibilities.each do |eligibility| %>
+    <%= check_box_tag "eligibilities[]", eligibility.name  %>
+    <%= label_tag eligibility.name %>
   <% end %>
-</ul>
+  <%= submit_tag 'Apply filter' %>
+<% end %>
