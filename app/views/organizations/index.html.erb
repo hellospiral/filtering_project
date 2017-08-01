@@ -1,3 +1,9 @@
 <% provide(:title, "All Organizations") %>
 
 <%= render @organizations %>
+
+<ul>Eligibilities:</ul>
+  <% @eligibilities.each do |ele| %>
+    <li><%= ele.name %></li>
+  <% end %>
+</ul>

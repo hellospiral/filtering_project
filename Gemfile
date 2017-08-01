@@ -12,6 +12,7 @@ gem "simple_form"
 gem "draper"
 
 group :development, :test do
+  gem 'pry'
   gem "rspec-rails"
   gem "rspec-mocks"
   gem "rspec-activemodel-mocks"

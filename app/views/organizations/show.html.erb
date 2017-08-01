@@ -10,3 +10,11 @@ Locations:
 
 
 Description: <%= @organization.description %>
+
+<hr>
+Eligibilities:
+<% @organization.eligibilities.each do |eligibility| %>
+    <p><%= eligibility.name %></p>
+<% end %>
+
+<%= link_to "edit", edit_organization_path(@organization) %>
