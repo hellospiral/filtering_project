@@ -8,5 +8,11 @@
     <%= check_box_tag "eligibilities[]", eligibility.name  %>
     <%= label_tag eligibility.name %>
   <% end %>
+  <br>
+  <%= radio_button_tag 'filter_type', 'Accepts any', true %>
+  <%= label_tag 'Accepts any' %>
+  <%= radio_button_tag 'filter_type', 'Accepts all' %>
+  <%= label_tag 'Accepts all' %>
+  <br>
   <%= submit_tag 'Apply filter' %>
 <% end %>

@@ -1,10 +1,6 @@
 class OrganizationsController < ApplicationController
   def index
-    if params[:eligibilities]
-      @organizations = Organization.by_eligibility(params[:eligibilities])
-    else
-      @organizations = Organization.all
-    end
+    @organizations = Organization.filter(params)
     @eligibilities = Eligibility.all
   end
 

@@ -9,12 +9,24 @@ class Organization < ActiveRecord::Base
 
   def self.and_filter(eligibilities)
 
-    orgs = Organization.where(nil)
+    orgs = self.where(nil)
 
     eligibilities.each do |ele|
-      orgs = orgs.merge(Organization.by_eligibility(ele))
+      orgs = orgs.merge(self.by_eligibility(ele))
     end
 
     orgs
+  end
+
+  def self.filter(params)
+    if params[:eligibilities]
+      if params[:filter_type] == 'Accepts any'
+        self.by_eligibility(params[:eligibilities])
+      elsif params[:filter_type] == 'Accepts all'
+        self.and_filter(params[:eligibilities])
+      end
+    else
+      self.all
+    end
   end
 end
