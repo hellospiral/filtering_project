@@ -27,8 +27,19 @@ describe Organization, type: :model do
 
       eligibility2 = FactoryGirl.create(:eligibility, name: 'Low income')
       organization.eligibilities.push(eligibility2)
-      expect(Organization.by_eligibility(['Women', 'Low income'])).to eq([ organization2, organization])
+      expect(Organization.by_eligibility(['Women', 'Low income'])).to eq([ organization, organization2])
+    end
 
+    it 'avoids duplicates for orgs with > 1 filtered eligibility' do
+      organization = FactoryGirl.create(:organization, name: "Food Pantry")
+      organization2 = FactoryGirl.create(:organization, name: "Women's Shelter")
+      eligibility = FactoryGirl.create(:eligibility, name: 'Women')
+      organization2.eligibilities.push(eligibility)
+      eligibility2 = FactoryGirl.create(:eligibility, name: 'Low income')
+      organization.eligibilities.push(eligibility2)
+      organization2.eligibilities.push(eligibility2)
+
+      expect(Organization.by_eligibility(['Women', 'Low income'])).to eq([organization, organization2])
     end
   end
 

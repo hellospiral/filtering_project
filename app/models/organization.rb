@@ -5,16 +5,13 @@ class Organization < ActiveRecord::Base
   has_many :locations
   has_and_belongs_to_many :eligibilities
 
-  scope :by_eligibility, ->(eligibility) {  joins(:eligibilities).where(eligibilities: { name: eligibility })}
+  scope :by_eligibility, ->(eligibility) {  joins(:eligibilities).where(eligibilities: { name: eligibility }).uniq.order(:id) }
 
   def self.and_filter(eligibilities)
-
     orgs = self.where(nil)
-
     eligibilities.each do |ele|
       orgs = orgs.merge(self.by_eligibility(ele))
     end
-
     orgs
   end
 
