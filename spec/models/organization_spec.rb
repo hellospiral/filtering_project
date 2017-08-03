@@ -31,4 +31,21 @@ describe Organization, type: :model do
 
     end
   end
+
+  describe '#and_filter' do
+    it 'returns only the organizations that match all eligibilities' do
+      organization = FactoryGirl.create(:organization, name: "Senior's Center")
+      organization2 = FactoryGirl.create(:organization, name: "Women's Shelter")
+      organization3 = FactoryGirl.create(:organization, name: "Veteran's Center")
+      eligibility = FactoryGirl.create(:eligibility, name: 'Seniors')
+      eligibility2 = FactoryGirl.create(:eligibility, name: 'Veterans')
+      eligibility3 = FactoryGirl.create(:eligibility, name: 'Women')
+
+      organization.eligibilities.push(eligibility)
+      organization2.eligibilities.push(eligibility3)
+      organization3.eligibilities.push(eligibility, eligibility2)
+
+      expect(Organization.and_filter(['Seniors', 'Veterans'])).to eq([organization3])
+    end
+  end
 end
