@@ -58,5 +58,24 @@ describe Organization, type: :model do
 
       expect(Organization.and_filter(['Seniors', 'Veterans'])).to eq([organization3])
     end
+
+    it 'returns empty array if no orgs match all eligibilities' do
+      organization = FactoryGirl.create(:organization, name: "Senior's Center")
+      organization2 = FactoryGirl.create(:organization, name: "Women's Shelter")
+      eligibility = FactoryGirl.create(:eligibility, name: 'Seniors')
+      eligibility2 = FactoryGirl.create(:eligibility, name: 'Women')
+
+      organization.eligibilities.push(eligibility)
+      organization2.eligibilities.push(eligibility2)
+
+      expect(Organization.and_filter(['Seniors', 'Women'])).to eq([])
+
+      organization3 = FactoryGirl.create(:organization, name: "Veteran's Center")
+      eligibility3 = FactoryGirl.create(:eligibility, name: 'Veterans')
+
+      organization3.eligibilities.push(eligibility3)
+
+      expect(Organization.and_filter(['Seniors', 'Women', 'Veterans'])).to eq([])
+    end
   end
 end
