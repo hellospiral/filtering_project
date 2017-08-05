@@ -10,6 +10,8 @@ gem "factory_girl"
 gem "jquery-rails"
 gem "simple_form"
 gem "draper"
+gem 'bootstrap-sass', '~> 3.3.6'
+gem 'sprockets-rails', :require => 'sprockets/railtie'
 
 group :development, :test do
   gem 'pry'

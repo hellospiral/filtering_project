@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>FullStackChallenge</title>
-  <%= stylesheet_link_tag    "application", media: "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+  <head>
+    <title>FullStackChallenge</title>
+    <%= stylesheet_link_tag    "application", media: "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <p class="lead">Resource Search</p>
+      </div>
+    </div>
+    <div class='container'>
+      <div class="flashes">
+        <% if flash[:success] %>
+        <p class="flash--success"><%= flash[:success] %></p>
+        <% end %>
 
-<div class="flashes">
-  <% if flash[:success] %>
-    <p class="flash--success"><%= flash[:success] %></p>
-  <% end %>
+        <% if flash[:alert] %>
+        <p class="flash--alert"><%= alert %></p>
+        <% end %>
+      </div>
 
-  <% if flash[:alert] %>
-    <p class="flash--alert"><%= alert %></p>
-  <% end %>
-</div>
+      <%= yield %>
 
-<%= yield %>
-
-</body>
+    </div>
+  </body>
 </html>

@@ -12,8 +12,42 @@
  *
  *= require_self
  */
-
+@import "bootstrap-sprockets";
+@import "bootstrap";
 @import "base/definitions";
 @import "base/variables";
 
 @import "shared/flashes";
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: lighter;
+  background-color: $grey-lighter;
+}
+
+.jumbotron {
+  background-color: $base-primary-color;
+  height: 75px;
+}
+
+.jumbotron p{
+  color: #fff;
+  margin-bottom: 0px;
+}
+
+.grey-text {
+  color: $text-grey;
+  font-weight: lighter;
+}
+
+.darker-grey {
+  color: $text-darker-grey;
+}
+
+.no-margin {
+  margin: 0px;
+}
+
+.float-right {
+  float: right;
+}

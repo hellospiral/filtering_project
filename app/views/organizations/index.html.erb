@@ -1,18 +1,16 @@
+
+
 <% provide(:title, "All Organizations") %>
+<div class='container'>
+  <div class='row'>
+    <div class="col-md-4">
+      <%= render 'filters' %>
+    </div>
 
-<%= render @organizations %>
-
-<h2>Filter organizations</h2>
-<%= form_tag organizations_path, method: 'get' do %>
-  <% @eligibilities.each do |eligibility| %>
-    <%= check_box_tag "eligibilities[]", eligibility.name  %>
-    <%= label_tag eligibility.name %>
-  <% end %>
-  <br>
-  <%= radio_button_tag 'filter_type', 'Accepts any', true %>
-  <%= label_tag 'Accepts any' %>
-  <%= radio_button_tag 'filter_type', 'Accepts all' %>
-  <%= label_tag 'Accepts all' %>
-  <br>
-  <%= submit_tag 'Apply filter' %>
-<% end %>
+    <div class='col-md-8'>
+      <ul class='list-group'>
+        <%= render @organizations %>  
+      </ul>
+    </div>
+  </div>
+</div>

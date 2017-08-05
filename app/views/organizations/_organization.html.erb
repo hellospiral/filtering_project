@@ -1,4 +1,9 @@
-<%= link_to(organization.decorate.name, organization_path(organization)) %>
-<% organization.locations.each do |location| %>
-  <p><%= location.decorate.address %></p>
-<% end %>
+<li class='list-group-item'>
+  <h4>
+    <%= link_to(organization.decorate.name, organization_path(organization)) %>
+  </h4>
+  <% organization.locations.each do |location| %>
+    <p><%= location.decorate.address %></p>
+  <% end %>
+</li>
+<br>
