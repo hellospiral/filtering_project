@@ -35,5 +35,29 @@ describe "Filtering organizations" do
     expect(page).to have_content(organization3.name)
     expect(page).not_to have_content(organization.name)
     expect(page).not_to have_content(organization2.name)
+
+  end
+
+  scenario 'Remembering selected filters' do
+    eligibility = FactoryGirl.create(:eligibility, name: 'Seniors')
+
+    visit root_path
+    find(:css, "#eligibilities_[value='Seniors']").set(true)
+    click_on 'Apply filter'
+
+    expect(page).to have_checked_field("eligibilities[]")
+  end
+
+  scenario 'Filter that returns no matches' do
+    organization = FactoryGirl.create(:organization, name: "Women's Center")
+    eligibility = FactoryGirl.create(:eligibility, name: 'Seniors')
+
+    visit root_path
+    expect(page).to have_content(organization.name)
+    find(:css, "#eligibilities_[value='Seniors']").set(true)
+    click_on 'Apply filter'
+
+    expect(page).to have_no_content(organization.name)
+    expect(page).to have_content("There are no organizations matching your search criteria.")
   end
 end

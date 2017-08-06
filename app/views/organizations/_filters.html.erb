@@ -4,7 +4,11 @@
   <% @eligibilities.each do |eligibility| %>
     <li class='list-group-item grey-text'>
       <p class = "no-margin">
-        <%= check_box_tag "eligibilities[]", eligibility.name  %>
+        <% if @selected and @selected.include?(eligibility.name) %>
+          <%= check_box_tag "eligibilities[]", eligibility.name, true  %>
+        <% else %>
+          <%= check_box_tag "eligibilities[]", eligibility.name  %>
+        <% end %>
         <%= eligibility.name %>
       </p>
     </li>
