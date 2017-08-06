@@ -1,20 +1,21 @@
 <% provide(:title, @organization.name) %>
 
-<%= @organization.name %>
-<%= link_to("Back to All Organizations", organizations_path) %>
-
-Locations:
-<% @organization.locations.each do |location| %>
-    <p><%= location.decorate.address %></p>
-<% end %>
-
-
-Description: <%= @organization.description %>
-
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-12'>
+      <h1><%= @organization.name %></h1>
+      <br>
+      <p class='darker-grey'><%= @organization.description %></p>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-4'>
+      <%= render 'eligibilities' %>
+    </div>
+    <div class='col-md-8'>
+      <%= render 'locations' %>
+    </div>
+  </div>
+</div>
 <hr>
-Eligibilities:
-<% @organization.eligibilities.each do |eligibility| %>
-    <p><%= eligibility.name %></p>
-<% end %>
-
-<%= link_to "edit", edit_organization_path(@organization) %>
+<%= link_to "Home", organizations_path, class: 'btn btn-primary' %>

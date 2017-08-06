@@ -1,0 +1,8 @@
+<h3>Locations:</h3>
+<ul class='list-group'>
+  <% @organization.locations.each do |location| %>
+      <li class='list-group-item darker-grey'>
+        <%= location.decorate.address %>
+      </li>
+  <% end %>
+</ul>

@@ -9,7 +9,11 @@
 
     <div class='col-md-8'>
       <ul class='list-group'>
-        <%= render @organizations %>  
+        <% if @organizations.any? %>
+          <%= render @organizations %>
+        <% else %>
+          <h4>There are no organizations matching your search criteria.</h4>
+        <% end %>
       </ul>
     </div>
   </div>
