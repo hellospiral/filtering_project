@@ -2,8 +2,10 @@
   <h4>
     <%= link_to(organization.decorate.name, organization_path(organization)) %>
   </h4>
-  <% organization.locations.each do |location| %>
+  <div class='hidden-xs'>
+    <% organization.locations.each do |location| %>
     <p><%= location.decorate.address %></p>
-  <% end %>
+    <% end %>
+  </div>
 </li>
-<br>
+<br class='hidden-xs hidden-sm'>

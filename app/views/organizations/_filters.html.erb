@@ -2,7 +2,7 @@
 <%= form_tag organizations_path, method: 'get' do %>
 <ul class='list-group'>
   <% @eligibilities.each do |eligibility| %>
-    <li class='list-group-item grey-text'>
+    <li class='list-group-item grey-text responsive-list'>
       <p class = "no-margin">
         <% if @selected and @selected.include?(eligibility.name) %>
           <%= check_box_tag "eligibilities[]", eligibility.name, true  %>
@@ -12,7 +12,7 @@
         <%= eligibility.name %>
       </p>
     </li>
-    <br />
+    <br class='hidden-xs hidden-sm'>
   <% end %>
 </ul>
 <div class=''>
@@ -28,7 +28,7 @@
       <%= label_tag 'Find organizations that accept all of these ' %>
     </div>
   </div>
+  <%= submit_tag 'Apply filter', class: 'btn btn-primary float-right' %>
 </div>
 <br>
-<%= submit_tag 'Apply filter', class: 'btn btn-primary float-right' %>
 <% end %>

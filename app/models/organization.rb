@@ -27,7 +27,6 @@ class Organization < ActiveRecord::Base
     else
       raise ArgumentError.new("Must pass at least one eligibility")
     end
-
     # orgs = self.where(nil)
     # eligibilities.each do |ele|
     #   orgs = orgs.merge(self.by_eligibility(ele))
