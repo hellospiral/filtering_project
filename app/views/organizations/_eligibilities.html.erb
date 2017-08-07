@@ -1,7 +1,7 @@
 <h3>Accepts:</h3>
 <% if @organization.eligibilities.any? %>
 
-  <ul class='list-group'>
+  <ul id='resizing_list' class='list-group'>
     <% @organization.eligibilities.each do |eligibility| %>
         <li class='list-group-item darker-grey'><%= eligibility.name %></li>
     <% end %>

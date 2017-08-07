@@ -57,8 +57,9 @@ body {
   text-decoration: none;
 }
 
-// @media screen and (max-width: 768px) {
-//   .responsive-list {
-//     padding: 15px;
-//   }
-// }
+
+@media screen and (max-width: 768px) {
+  .responsive-list {
+    margin-bottom: 5px;
+  }
+}

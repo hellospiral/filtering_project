@@ -1,6 +1,6 @@
 <h4 class='darker-grey'>Filters</h4>
 <%= form_tag organizations_path, method: 'get' do %>
-<ul class='list-group'>
+<ul id='resizing_list' class='list-group'>
   <% @eligibilities.each do |eligibility| %>
     <li class='list-group-item grey-text responsive-list'>
       <p class = "no-margin">
