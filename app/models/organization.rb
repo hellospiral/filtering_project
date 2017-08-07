@@ -22,14 +22,14 @@ class Organization < ActiveRecord::Base
       Organization.by_eligibility(eligibilities.first)
     elsif eligibilities.length > 1
       eligibilities_list = []
-      has_all = []
+      has_all = Organization.none
 
       eligibilities.each do |ele|
         eligibility = Eligibility.find_by_name(ele)
         eligibilities_list << eligibility
       end
 
-      Organization.all.each do |org|
+      Organization.by_eligibility(eligibilities).each do |org|
         if org.has_all_eligibilities(eligibilities_list)
           has_all << org
         end
