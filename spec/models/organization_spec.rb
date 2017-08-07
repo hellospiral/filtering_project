@@ -47,7 +47,7 @@ describe Organization, type: :model do
     end
   end
 
-  describe '#and_filter' do
+  describe 'Organization#and_filter' do
     let(:organization) { FactoryGirl.create(:organization, name: "Senior's Center") }
     let(:organization2) { FactoryGirl.create(:organization, name: "Women's Shelter") }
     let(:organization3) { FactoryGirl.create(:organization, name: "Veteran's Center") }
@@ -79,6 +79,39 @@ describe Organization, type: :model do
       organization3.eligibilities.push(eligibility3)
 
       expect(Organization.and_filter(['Seniors', 'Women', 'Veterans'])).to eq([])
+    end
+  end
+
+  describe '#has_all_eligibilities' do
+    let(:organization) { FactoryGirl.create(:organization, name: "Senior's Center") }
+    let(:eligibility) { FactoryGirl.create(:eligibility, name: 'Seniors')}
+    let(:eligibility2) { FactoryGirl.create(:eligibility, name: 'Veterans') }
+    let(:eligibility3) { FactoryGirl.create(:eligibility, name: "Women") }
+
+    it 'returns true for if an org has all passed eligibilities' do
+      organization.eligibilities.push(eligibility, eligibility2, eligibility3)
+      expect(organization.has_all_eligibilities([eligibility, eligibility2, eligibility3])).to eq(true)
+    end
+
+    it 'returns false if an org only has some passed eligibilities' do
+      organization.eligibilities.push(eligibility, eligibility2)
+      expect(organization.has_all_eligibilities([eligibility, eligibility2, eligibility3])).to eq(false)
+    end
+  end
+
+  describe 'Organization#filter' do
+    let(:organization) { FactoryGirl.create(:organization, name: "Senior's Center") }
+    let(:organization2) { FactoryGirl.create(:organization, name: "Women's Shelter") }
+    let(:organization3) { FactoryGirl.create(:organization, name: "Veteran's Center") }
+    let(:eligibility) { FactoryGirl.create(:eligibility, name: 'Seniors')}
+    let(:eligibility2) { FactoryGirl.create(:eligibility, name: 'Veterans') }
+    let(:eligibility3) { FactoryGirl.create(:eligibility, name: "Women") }
+
+    it 'calls *OR* filter for one eligibility' do
+      organization.eligibilities.push(eligibility)
+      params = { "eligibilities"=>["Seniors"], "filter_type"=>"Accepts any" }
+
+      expect(Organization.filter(params)).to eq([organization])
     end
   end
 end
