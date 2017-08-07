@@ -1,68 +1,89 @@
 require "rails_helper"
 
-describe "Filtering organizations" do
-  scenario "filtering organizations by eligibility" do
-    organization = FactoryGirl.create(:organization, name: "Women's Shelter")
-    organization2 = FactoryGirl.create(:organization, name: "Children's Hospital")
-    eligibility = FactoryGirl.create(:eligibility, name: "Youth")
-    organization2.eligibilities.push(eligibility)
+describe "the filtering path" do
+  let(:organization) { FactoryGirl.create(:organization, name: "Seniors's Center") }
+  let(:organization2) { FactoryGirl.create(:organization, name: "Women's Shelter") }
+  let(:organization3) { FactoryGirl.create(:organization, name: "Veteran's Center") }
+  let(:eligibility) { FactoryGirl.create(:eligibility, name: "Seniors") }
+  let(:eligibility2) { FactoryGirl.create(:eligibility, name: 'Veterans') }
+  let(:eligibility3) { FactoryGirl.create(:eligibility, name: 'Women') }
 
-    visit root_path
-    check "eligibilities[]"
-    click_on 'Apply filter'
-    expect(page).to have_content(organization2.name)
-    expect(page).not_to have_content(organization.name)
+  describe "filtering organizations by eligibility" do
+    before do
+      organization2.eligibilities.push(eligibility)
+      visit root_path
+      check "eligibilities[]"
+      click_on 'Apply filter'
+    end
 
+    it 'displays the name of the organizations matching the checked eligibilities' do
+      expect(page).to have_content(organization2.name)
+    end
+
+    it "doesn't show the name of organizations that don't match checked eligibilities" do
+      expect(page).not_to have_content(organization.name)
+    end
   end
 
-  scenario "Filtering organization with exclusive *AND*" do
-    organization = FactoryGirl.create(:organization, name: "Senior's Center")
-    organization2 = FactoryGirl.create(:organization, name: "Women's Shelter")
-    organization3 = FactoryGirl.create(:organization, name: "Veteran's Center")
-    eligibility = FactoryGirl.create(:eligibility, name: 'Seniors')
-    eligibility2 = FactoryGirl.create(:eligibility, name: 'Veterans')
-    eligibility3 = FactoryGirl.create(:eligibility, name: 'Women')
+  describe 'Filtering organizations with exclusive *AND*' do
+    before do
+      organization.eligibilities.push(eligibility)
+      organization2.eligibilities.push(eligibility3)
+      organization3.eligibilities.push(eligibility, eligibility2)
+      visit root_path
+      find(:css, "#eligibilities_[value='Seniors']").set(true)
+      find(:css, "#eligibilities_[value='Veterans']").set(true)
+      find(:css, "#filter_type_Accepts_all").set(true)
+      click_on 'Apply filter'
+    end
 
-    organization.eligibilities.push(eligibility)
-    organization2.eligibilities.push(eligibility3)
-    organization3.eligibilities.push(eligibility, eligibility2)
+    it "displays organizations matching both eligibilities" do
+      expect(page).to have_content(organization3.name)
+    end
 
-    visit root_path
-    find(:css, "#eligibilities_[value='Seniors']").set(true)
-    find(:css, "#eligibilities_[value='Veterans']").set(true)
-    find(:css, "#filter_type_Accepts_all").set(true)
-    click_on 'Apply filter'
-    expect(page).to have_content(organization3.name)
-    expect(page).not_to have_content(organization.name)
-    expect(page).not_to have_content(organization2.name)
+    it "doesn't display organizations that don't match both eligibilities" do
+      expect(page).not_to have_content(organization.name)
+      expect(page).not_to have_content(organization2.name)
+    end
 
-    organization.eligibilities.push(eligibility2, eligibility3)
 
-    visit root_path
-    find(:css, "#eligibilities_[value='Women']").set(true)
-    find(:css, "#eligibilities_[value='Seniors']").set(true)
-    find(:css, "#eligibilities_[value='Veterans']").set(true)
-    find(:css, "#filter_type_Accepts_all").set(true)
-    click_on 'Apply filter'
+    describe 'matching >2 eligibilities' do
+      before do
+        organization.eligibilities.push(eligibility2, eligibility3)
+        visit root_path
+        find(:css, "#eligibilities_[value='Women']").set(true)
+        find(:css, "#eligibilities_[value='Seniors']").set(true)
+        find(:css, "#eligibilities_[value='Veterans']").set(true)
+        find(:css, "#filter_type_Accepts_all").set(true)
+        click_on 'Apply filter'
+      end
 
-    expect(page).to have_content(organization.name)
-    expect(page).not_to have_content(organization2.name)
-    expect(page).not_to have_content(organization3.name)
+      it 'shows corrent match' do
+        expect(page).to have_content(organization.name)
+      end
 
-    eligibility4 = FactoryGirl.create(:eligibility, name: 'Children')
-    organization2.eligibilities.push(eligibility4)
+      it "doesn't show incorrect matches" do
+        expect(page).not_to have_content(organization2.name)
+        expect(page).not_to have_content(organization3.name)
+      end
 
-    visit root_path
-    find(:css, "#eligibilities_[value='Women']").set(true)
-    find(:css, "#eligibilities_[value='Children']").set(true)
-    find(:css, "#eligibilities_[value='Veterans']").set(true)
-    find(:css, "#filter_type_Accepts_all").set(true)
-    click_on 'Apply filter'
+      it "filters out organizations that don't match all eligibilities" do
+        eligibility4 = FactoryGirl.create(:eligibility, name: 'Children')
+        organization2.eligibilities.push(eligibility4)
 
-    expect(page).to have_content("There are no organizations matching your search criteria.")
+        visit root_path
+        find(:css, "#eligibilities_[value='Women']").set(true)
+        find(:css, "#eligibilities_[value='Children']").set(true)
+        find(:css, "#eligibilities_[value='Veterans']").set(true)
+        find(:css, "#filter_type_Accepts_all").set(true)
+        click_on 'Apply filter'
+
+        expect(page).to have_content("There are no organizations matching your search criteria.")
+      end
+    end
   end
 
-  scenario 'Remembering selected filters' do
+  it 'remembers selected filters' do
     eligibility = FactoryGirl.create(:eligibility, name: 'Seniors')
 
     visit root_path
@@ -72,7 +93,7 @@ describe "Filtering organizations" do
     expect(page).to have_checked_field("eligibilities[]")
   end
 
-  scenario 'Filter that returns no matches' do
+  it 'informs the user when no matches are found' do
     organization = FactoryGirl.create(:organization, name: "Women's Center")
     eligibility = FactoryGirl.create(:eligibility, name: 'Seniors')
 

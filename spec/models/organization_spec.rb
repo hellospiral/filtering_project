@@ -17,39 +17,44 @@ describe Organization, type: :model do
 
   describe 'associations' do
     it { should have_and_belong_to_many :eligibilities}
+  end
+
+  describe '#by_eligibility' do
+    let(:organization) { FactoryGirl.create(:organization, name: "Food Pantry") }
+    let(:organization2) { FactoryGirl.create(:organization, name: "Women's Shelter") }
+    let(:eligibility) { FactoryGirl.create(:eligibility, name: 'Women') }
+
+    before do
+      organization2.eligibilities.push(eligibility)
+    end
 
     it 'returns scoped organizations by eligibility' do
-      organization = FactoryGirl.create(:organization, name: "Food Pantry")
-      organization2 = FactoryGirl.create(:organization, name: "Women's Shelter")
-      eligibility = FactoryGirl.create(:eligibility, name: 'Women')
-      organization2.eligibilities.push(eligibility)
       expect(Organization.by_eligibility('Women')).to eq([organization2])
+    end
 
+    it 'returns all organizations that match either eligibility' do
       eligibility2 = FactoryGirl.create(:eligibility, name: 'Low income')
       organization.eligibilities.push(eligibility2)
-      expect(Organization.by_eligibility(['Women', 'Low income'])).to eq([ organization, organization2])
+      expect(Organization.by_eligibility(['Women', 'Low income'])).to eq([ organization2, organization])
     end
 
     it 'avoids duplicates for orgs with > 1 filtered eligibility' do
-      organization = FactoryGirl.create(:organization, name: "Food Pantry")
-      organization2 = FactoryGirl.create(:organization, name: "Women's Shelter")
-      eligibility = FactoryGirl.create(:eligibility, name: 'Women')
-      organization2.eligibilities.push(eligibility)
       eligibility2 = FactoryGirl.create(:eligibility, name: 'Low income')
       organization.eligibilities.push(eligibility2)
       organization2.eligibilities.push(eligibility2)
 
-      expect(Organization.by_eligibility(['Women', 'Low income'])).to eq([organization, organization2])
+      expect(Organization.by_eligibility(['Women', 'Low income'])).to eq([organization2, organization])
     end
   end
 
   describe '#and_filter' do
+    let(:organization) { FactoryGirl.create(:organization, name: "Senior's Center") }
+    let(:organization2) { FactoryGirl.create(:organization, name: "Women's Shelter") }
+    let(:organization3) { FactoryGirl.create(:organization, name: "Veteran's Center") }
+    let(:eligibility) { FactoryGirl.create(:eligibility, name: 'Seniors')}
+    let(:eligibility2) { FactoryGirl.create(:eligibility, name: 'Veterans') }
+
     it 'returns only the organizations that match all eligibilities' do
-      organization = FactoryGirl.create(:organization, name: "Senior's Center")
-      organization2 = FactoryGirl.create(:organization, name: "Women's Shelter")
-      organization3 = FactoryGirl.create(:organization, name: "Veteran's Center")
-      eligibility = FactoryGirl.create(:eligibility, name: 'Seniors')
-      eligibility2 = FactoryGirl.create(:eligibility, name: 'Veterans')
       eligibility3 = FactoryGirl.create(:eligibility, name: 'Women')
 
       organization.eligibilities.push(eligibility)
@@ -60,19 +65,17 @@ describe Organization, type: :model do
     end
 
     it 'returns empty array if no orgs match all eligibilities' do
-      organization = FactoryGirl.create(:organization, name: "Senior's Center")
-      organization2 = FactoryGirl.create(:organization, name: "Women's Shelter")
-      eligibility = FactoryGirl.create(:eligibility, name: 'Seniors')
-      eligibility2 = FactoryGirl.create(:eligibility, name: 'Women')
-
       organization.eligibilities.push(eligibility)
       organization2.eligibilities.push(eligibility2)
 
-      expect(Organization.and_filter(['Seniors', 'Women'])).to eq([])
+      expect(Organization.and_filter(['Seniors', 'Veterans'])).to eq([])
+    end
 
-      organization3 = FactoryGirl.create(:organization, name: "Veteran's Center")
-      eligibility3 = FactoryGirl.create(:eligibility, name: 'Veterans')
+    it 'returns empty if no orgs match all of 3 eligibilities' do
+      eligibility3 = FactoryGirl.create(:eligibility, name: 'Women')
 
+      organization.eligibilities.push(eligibility)
+      organization2.eligibilities.push(eligibility2)
       organization3.eligibilities.push(eligibility3)
 
       expect(Organization.and_filter(['Seniors', 'Women', 'Veterans'])).to eq([])
