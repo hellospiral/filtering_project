@@ -22,10 +22,10 @@
   <div class="collapse" id="collapseExample">
     <div class="well">
       <%= radio_button_tag 'filter_type', 'Accepts any', true %>
-      <%= label_tag 'Find organizations that accept any of these ' %>
+      <%= label_tag 'accepts_any', "Find organizations that accept any of these ", id: 'accepts_any' %>
       <br>
       <%= radio_button_tag 'filter_type', 'Accepts all' %>
-      <%= label_tag 'Find organizations that accept all of these ' %>
+      <%= label_tag 'accepts_all', "Find organizations that accept all of these ", id: 'accepts_all' %>
     </div>
   </div>
   <%= submit_tag 'Apply filter', class: 'btn btn-primary float-right' %>
