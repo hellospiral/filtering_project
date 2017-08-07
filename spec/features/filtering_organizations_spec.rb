@@ -36,6 +36,30 @@ describe "Filtering organizations" do
     expect(page).not_to have_content(organization.name)
     expect(page).not_to have_content(organization2.name)
 
+    organization.eligibilities.push(eligibility2, eligibility3)
+
+    visit root_path
+    find(:css, "#eligibilities_[value='Women']").set(true)
+    find(:css, "#eligibilities_[value='Seniors']").set(true)
+    find(:css, "#eligibilities_[value='Veterans']").set(true)
+    find(:css, "#filter_type_Accepts_all").set(true)
+    click_on 'Apply filter'
+
+    expect(page).to have_content(organization.name)
+    expect(page).not_to have_content(organization2.name)
+    expect(page).not_to have_content(organization3.name)
+
+    eligibility4 = FactoryGirl.create(:eligibility, name: 'Children')
+    organization2.eligibilities.push(eligibility4)
+
+    visit root_path
+    find(:css, "#eligibilities_[value='Women']").set(true)
+    find(:css, "#eligibilities_[value='Children']").set(true)
+    find(:css, "#eligibilities_[value='Veterans']").set(true)
+    find(:css, "#filter_type_Accepts_all").set(true)
+    click_on 'Apply filter'
+
+    expect(page).to have_content("There are no organizations matching your search criteria.")
   end
 
   scenario 'Remembering selected filters' do

@@ -7,31 +7,38 @@ class Organization < ActiveRecord::Base
 
   scope :by_eligibility, ->(eligibility) {  joins(:eligibilities).where(eligibilities: { name: eligibility }).uniq.order(:id) }
 
+  def has_all_eligibilities(eligibilities)
+
+    eligibilities.each do |ele|
+      unless self.eligibilities.include?(ele)
+        return false
+      end
+    end
+    return true
+  end
+
   def self.and_filter(eligibilities)
     if eligibilities.length == 1
       Organization.by_eligibility(eligibilities.first)
     elsif eligibilities.length > 1
-      orgs = Organization.by_eligibility(eligibilities.first)
-      common = []
+      eligibilities_list = []
+      has_all = []
 
-      (1...eligibilities.length).each do |i|
-        new_orgs = Organization.by_eligibility(eligibilities[i])
-        new_orgs.each do |org|
-          if orgs.include?(org)
-            common << org unless common.include?(org)
-          end
+      eligibilities.each do |ele|
+        eligibility = Eligibility.find_by_name(ele)
+        eligibilities_list << eligibility
+      end
+
+      Organization.all.each do |org|
+        if org.has_all_eligibilities(eligibilities_list)
+          has_all << org
         end
       end
 
-      common
+      has_all
     else
       raise ArgumentError.new("Must pass at least one eligibility")
     end
-    # orgs = self.where(nil)
-    # eligibilities.each do |ele|
-    #   orgs = orgs.merge(self.by_eligibility(ele))
-    # end
-    # orgs
   end
 
   def self.filter(params)
