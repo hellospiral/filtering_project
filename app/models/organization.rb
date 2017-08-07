@@ -22,7 +22,7 @@ class Organization < ActiveRecord::Base
       Organization.by_eligibility(eligibilities.first)
     elsif eligibilities.length > 1
       eligibilities_list = []
-      has_all = Organization.none
+      has_all = []
 
       eligibilities.each do |ele|
         eligibility = Eligibility.find_by_name(ele)
@@ -44,12 +44,12 @@ class Organization < ActiveRecord::Base
   def self.filter(params)
     if params[:eligibilities]
       if params[:filter_type] == 'Accepts any'
-        self.by_eligibility(params[:eligibilities])
+        self.by_eligibility(params[:eligibilities]).includes(:locations)
       elsif params[:filter_type] == 'Accepts all'
         self.and_filter(params[:eligibilities])
       end
     else
-      self.all
+      self.all.includes(:locations)
     end
   end
 end

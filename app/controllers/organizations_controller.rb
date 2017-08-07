@@ -1,6 +1,6 @@
 class OrganizationsController < ApplicationController
   def index
-    @organizations = Organization.filter(params).includes(:locations)
+    @organizations = Organization.filter(params)
     @eligibilities = Eligibility.all
     @selected = params[:eligibilities]
   end
